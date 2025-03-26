@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-*ki@xr79szd&q^+$_4n99#xi95)ub2wa#)3q-h-iffdb4m(-_)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["litvinhotel-production.up.railway.app"]
+ALLOWED_HOSTS = ["litvinhotel-production.up.railway.app", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -143,3 +143,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
+
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = [
+    "https://litvinhotel-production.up.railway.app",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+CSRF_USE_SESSIONS = True
