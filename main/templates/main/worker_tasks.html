@@ -1,0 +1,59 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Мои задачи{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Мои задачи</h1>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row">
+        {% for task in tasks %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                    <p class="card-text">{{ task.description }}</p>
+                    <div class="mb-2">
+                        <strong>Создана:</strong> {{ task.created_by.get_full_name }}
+                    </div>
+                    <div class="mb-2">
+                        <strong>Срок:</strong> {{ task.due_date|date:"d.m.Y H:i" }}
+                    </div>
+                    <div class="mb-2">
+                        <strong>Статус:</strong>
+                        <span class="badge {% if task.status == 'new' %}bg-primary
+                                          {% elif task.status == 'in_progress' %}bg-warning
+                                          {% elif task.status == 'completed' %}bg-success
+                                          {% else %}bg-danger{% endif %}">
+                            {{ task.get_status_display }}
+                        </span>
+                    </div>
+                    {% if task.completed_at %}
+                    <div class="mb-2">
+                        <strong>Выполнено:</strong> {{ task.completed_at|date:"d.m.Y H:i" }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                У вас пока нет задач.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

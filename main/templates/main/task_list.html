@@ -1,0 +1,72 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Задачи{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Задачи</h1>
+        <a href="{% url 'task_create' %}" class="btn btn-primary">Создать задачу</a>
+    </div>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row">
+        {% for task in tasks %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                    <p class="card-text">{{ task.description }}</p>
+                    <div class="task-info">
+                        <div class="mb-2">
+                            <strong>Создана:</strong> {{ task.created_by.get_full_name }} ({{ task.created_at|date:"d.m.Y H:i" }})
+                        </div>
+                        <div class="mb-2">
+                            <strong>Срок выполнения:</strong> {{ task.due_date|date:"d.m.Y H:i" }}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Статус:</strong>
+                            <form method="post" action="{% url 'task_update_status' task.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <select name="status" class="form-select form-select-sm d-inline-block w-auto ms-2" onchange="this.form.submit()">
+                                    {% for value, label in task.STATUS_CHOICES %}
+                                    <option value="{{ value }}" {% if task.status == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </div>
+                        {% if task.completed_at %}
+                        <div class="mb-2">
+                            <strong>Выполнено:</strong> {{ task.completed_at|date:"d.m.Y H:i" }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="mt-3">
+                        <a href="{% url 'task_edit' task.pk %}" class="btn btn-sm btn-primary">Редактировать</a>
+                        <a href="{% url 'task_delete' task.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                Задач пока нет.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

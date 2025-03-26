@@ -1,0 +1,125 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                {% if room.image %}
+                <img src="{{ room.image.url }}" class="card-img-top" alt="{{ room.room_number }}">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="card-title">Номер {{ room.room_number }}</h2>
+                    <p class="card-text">{{ room.description }}</p>
+                    <p class="card-text"><strong>Тип номера:</strong> {{ room.get_room_type_display }}</p>
+                    <p class="card-text"><strong>Цена за ночь:</strong> {{ room.price }} ₽</p>
+                    <p class="card-text"><strong>Статус:</strong> 
+                        {% if room.is_available %}
+                        <span class="badge bg-success">Доступен</span>
+                        {% else %}
+                        <span class="badge bg-danger">Занят</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Удобства</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        {% if room.has_fridge %}
+                        <li><i class="fas fa-snowflake"></i> Холодильник</li>
+                        {% endif %}
+                        {% if room.has_minibar %}
+                        <li><i class="fas fa-glass-martini-alt"></i> Мини-бар</li>
+                        {% endif %}
+                        {% if room.has_bathroom %}
+                        <li><i class="fas fa-bath"></i> Ванная комната</li>
+                        {% endif %}
+                        {% if room.has_air_conditioning %}
+                        <li><i class="fas fa-wind"></i> Кондиционер</li>
+                        {% endif %}
+                        {% if room.has_tv %}
+                        <li><i class="fas fa-tv"></i> Телевизор</li>
+                        {% endif %}
+                        {% if room.has_kettle %}
+                        <li><i class="fas fa-mug-hot"></i> Чайник</li>
+                        {% endif %}
+                        {% if room.has_wifi %}
+                        <li><i class="fas fa-wifi"></i> Wi-Fi</li>
+                        {% endif %}
+                        {% if room.has_safe %}
+                        <li><i class="fas fa-vault"></i> Сейф</li>
+                        {% endif %}
+                        {% if room.has_balcony %}
+                        <li><i class="fas fa-door-open"></i> Балкон</li>
+                        {% endif %}
+                        {% if room.has_jacuzzi %}
+                        <li><i class="fas fa-hot-tub"></i> Джакузи</li>
+                        {% endif %}
+                        {% if room.has_kitchen %}
+                        <li><i class="fas fa-utensils"></i> Кухня</li>
+                        {% endif %}
+                        {% if room.has_office %}
+                        <li><i class="fas fa-laptop"></i> Офис</li>
+                        {% endif %}
+                        {% if room.has_pool %}
+                        <li><i class="fas fa-swimming-pool"></i> Бассейн</li>
+                        {% endif %}
+                        {% if room.has_terrace %}
+                        <li><i class="fas fa-umbrella-beach"></i> Тераса</li>
+                        {% endif %}
+                        {% if room.has_sea_view %}
+                        <li><i class="fas fa-water"></i> Вид на море</li>
+                        {% endif %}
+                        {% if room.has_city_view %}
+                        <li><i class="fas fa-city"></i> Вид на город</li>
+                        {% endif %}
+                        {% if room.has_garden_view %}
+                        <li><i class="fas fa-tree"></i> Вид на сад</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            {% if user.is_authenticated and room.is_available %}
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Забронировать номер</h5>
+                    <form method="post" action="{% url 'booking_create' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="room" value="{{ room.id }}">
+                        <div class="mb-3">
+                            <label for="check_in" class="form-label">Дата заезда</label>
+                            <input type="date" class="form-control" id="check_in" name="check_in" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="check_out" class="form-label">Дата выезда</label>
+                            <input type="date" class="form-control" id="check_out" name="check_out" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Забронировать</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if user.role and user.role.name == 'Менеджер' %}
+            <div class="card mt-4">
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'room_edit' room.pk %}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Редактировать
+                        </a>
+                        <a href="{% url 'room_delete' room.pk %}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Удалить
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

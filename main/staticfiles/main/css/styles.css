@@ -1,0 +1,32 @@
+/* Стили для формы фильтрации */
+.card {
+    margin-bottom: 2rem;
+    background-color: #fff; /* Белый фон */
+    border: 1px solid #ddd; /* Граница */
+    border-radius: 8px; /* Скругленные углы */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
+}
+
+.card-body {
+    padding: 1.5rem; /* Внутренние отступы */
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc; /* Граница */
+    border-radius: 4px; /* Скругленные углы */
+    margin-bottom: 1rem; /* Отступ снизу */
+}
+
+.form-check {
+    margin-bottom: 0.5rem; /* Отступ между чекбоксами */
+}
+
+.form-check-input {
+    margin-right: 0.5rem; /* Отступ справа от чекбокса */
+}
+
+.btn {
+    margin-right: 0.5rem; /* Отступ между кнопками */
+}

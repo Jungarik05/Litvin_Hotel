@@ -1,0 +1,77 @@
+{% extends 'main/base.html' %}
+
+{% block title %}LitvinHotel - Главная{% endblock %}
+
+{% block content %}
+<!-- Главный баннер с самым дорогим номером -->
+<div class="container-fluid p-0">
+    {% if rooms %}
+        {% with most_expensive_room=rooms|dictsort:"price"|last %}
+        <div class="position-relative">
+            {% if most_expensive_room.image %}
+                <img src="{% url 'room_image' most_expensive_room.id %}" class="img-fluid w-100" style="height: 500px; object-fit: cover;" alt="Самый дорогой номер">
+            {% else %}
+                <div class="bg-dark" style="height: 500px;"></div>
+            {% endif %}
+            <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+                <h1 class="display-4 fw-bold">Роскошный отдых в LitvinHotel</h1>
+                <p class="lead">Почувствуйте себя королем в нашем премиум номере</p>
+                <a href="{% url 'book_room' most_expensive_room.id %}" class="btn btn-primary btn-lg">Забронировать сейчас</a>
+            </div>
+        </div>
+        {% endwith %}
+    {% else %}
+        <div class="position-relative bg-dark" style="height: 500px;">
+            <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+                <h1 class="display-4 fw-bold">Добро пожаловать в LitvinHotel</h1>
+                <p class="lead">Скоро у нас появятся роскошные номера для вашего отдыха</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Преимущества отеля -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Почему выбирают нас</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    <i class="fas fa-star text-warning me-2"></i>
+                    <strong>Премиальное качество обслуживания</strong>
+                    <p class="text-muted">Наши сотрудники всегда готовы помочь и сделать ваш отдых максимально комфортным</p>
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                    <strong>Удобное расположение</strong>
+                    <p class="text-muted">Отель находится в центре города, рядом с основными достопримечательностями</p>
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-wifi text-primary me-2"></i>
+                    <strong>Современные удобства</strong>
+                    <p class="text-muted">Бесплатный Wi-Fi, кондиционеры, мини-бары и многое другое в каждом номере</p>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    <i class="fas fa-utensils text-success me-2"></i>
+                    <strong>Вкусное питание</strong>
+                    <p class="text-muted">Ресторан с разнообразным меню и завтрак "шведский стол"</p>
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-spa text-info me-2"></i>
+                    <strong>SPA и оздоровление</strong>
+                    <p class="text-muted">Спа-центр, бассейн и фитнес-зал для вашего здоровья</p>
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-shield-alt text-secondary me-2"></i>
+                    <strong>Безопасность</strong>
+                    <p class="text-muted">Круглосуточная охрана и система видеонаблюдения</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %} 

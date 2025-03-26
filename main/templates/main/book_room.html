@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Бронирование номера {{ room.room_number }} - Наш Отель{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Бронирование номера {{ room.room_number }}</h2>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        <div class="container mt-3">
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-4">
+                        <h4>Информация о номере:</h4>
+                        <p><strong>Тип номера:</strong> {{ room.get_room_type_display }}</p>
+                        <p><strong>Цена за сутки:</strong> {{ room.price }} ₽</p>
+                        <p><strong>Описание:</strong> {{ room.description }}</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="check_in" class="form-label">Дата заезда:</label>
+                            <input type="date" id="check_in" name="check_in" class="form-control" required>
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="check_out" class="form-label">Дата выезда:</label>
+                            <input type="date" id="check_out" name="check_out" class="form-control" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Забронировать номер</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

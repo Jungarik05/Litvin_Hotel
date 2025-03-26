@@ -1,0 +1,35 @@
+from django.urls import path
+from django.contrib.auth import views as auth_views
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('rooms/', views.rooms, name='rooms'),
+    path('room/<int:room_id>/image/', views.room_image, name='room_image'),
+    path('register/', views.register, name='register'),
+    path('login/', views.user_login, name='user_login'),
+    path('logout/', views.user_logout, name='user_logout'),
+    path('profile/', views.profile_view, name='profile'),
+    path('booking/<int:booking_id>/', views.booking_detail, name='booking_detail'),
+    path('booking/<int:booking_id>/complaint/', views.create_complaint, name='create_complaint'),
+    path('booking/<int:booking_id>/pdf/', views.download_booking_pdf, name='download_booking_pdf'),
+    path('tasks/', views.task_list, name='task_list'),
+    path('tasks/create/', views.task_create, name='task_create'),
+    path('tasks/<int:pk>/edit/', views.task_edit, name='task_edit'),
+    path('tasks/<int:pk>/delete/', views.task_delete, name='task_delete'),
+    path('tasks/<int:pk>/update-status/', views.task_update_status, name='task_update_status'),
+    path('rooms/create/', views.room_create, name='room_create'),
+    path('rooms/<int:pk>/edit/', views.room_edit, name='room_edit'),
+    path('rooms/<int:pk>/delete/', views.room_delete, name='room_delete'),
+    path('rooms/<int:pk>/', views.room_detail, name='room_detail'),
+    path('rooms/<int:pk>/book/', views.booking_create, name='book_room'),
+    path('complaints/', views.complaint_list, name='complaint_list'),
+    path('complaints/<int:pk>/', views.complaint_detail, name='complaint_detail'),
+    path('complaints/<int:pk>/edit/', views.complaint_edit, name='complaint_edit'),
+    path('complaints/<int:pk>/delete/', views.complaint_delete, name='complaint_delete'),
+    path('bookings/', views.booking_list, name='booking_list'),
+    path('bookings/create/', views.booking_create, name='booking_create'),
+    path('bookings/<int:pk>/edit/', views.booking_edit, name='booking_edit'),
+    path('bookings/<int:pk>/delete/', views.booking_delete, name='booking_delete'),
+    path('worker/tasks/', views.worker_tasks, name='worker_tasks'),
+] 

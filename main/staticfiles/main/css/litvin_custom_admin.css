@@ -1,0 +1,116 @@
+:root {
+    --primary-color: #85d988; /* Зеленый */
+    --secondary-color: #d63e46; /* Серый */
+    --accent-color: #FF5722; /* Оранжевый */
+    --background-color: #F5F5F5; /* Светло-серый */
+    --text-color: #212121; /* Темно-серый */
+    --border-color: #0d6f02; /* Серый */
+}
+
+#result_list {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    background: transparent;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#result_list th {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+}
+
+#result_list td {
+    padding: 1rem;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-left: none;
+    border-right: none;
+}
+
+#result_list tr:hover td {
+    background: #f0f0f0;
+}
+
+#result_list tr:nth-child(even) td {
+    background: #f9f9f9;
+}
+
+#result_list td:first-child {
+    border-radius: 8px 0 0 8px;
+}
+
+#result_list td:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+.module h2 {
+    background: #85d988; /* Зеленый */
+    color: white;
+    padding: 1rem;
+    border-radius: 8px 8px 0 0;
+    margin: 0;
+}
+
+/* Стили для формы редактирования */
+.form-row {
+    padding: 1rem;
+    border-bottom: 1px solid #BDBDBD; /* Серый */
+    background: rgba(152, 255, 217, 0.719);
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+/* Стили для полей ввода */
+.form-row input[type="text"],
+.form-row input[type="number"],
+.form-row select,
+.form-row textarea {
+    height: 40px; /* Высота полей */
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #118f69; /* Серый */
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-row input[type="text"]:focus,
+.form-row input[type="number"]:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+    border-color: #118f69; /* Серый */
+    outline: none;
+}
+
+/* Стили для кнопок */
+.submit-row input {
+    background: #118f69; /* Серый */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-row input:hover {
+    background: #85d988; /* Зеленый */
+}
+
+.submit-row a.deletelink {
+    background: #FF5722; /* Оранжевый */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.submit-row a.deletelink:hover {
+    background: #d32f2f; /* Темно-красный */
+}
