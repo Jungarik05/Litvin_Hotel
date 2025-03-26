@@ -2,6 +2,7 @@ from django import forms
 from .models import Room, User, Booking, Task, Complaint, ComplaintStatus
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django.utils import timezone
 import re
 
 class RegistrationForm(UserCreationForm):
@@ -57,11 +58,19 @@ class BookingForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     check_in = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'form-control',
+            'min': timezone.now().date().isoformat()
+        }),
         label="Дата заезда"
     )
     check_out = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'form-control',
+            'min': timezone.now().date().isoformat()
+        }),
         label="Дата выезда"
     )
 
@@ -72,6 +81,13 @@ class BookingForm(forms.Form):
         room = cleaned_data.get('room')
 
         if check_in and check_out and room:
+            # Проверяем, что даты не в прошлом
+            today = timezone.now().date()
+            if check_in < today:
+                raise forms.ValidationError('Дата заезда не может быть в прошлом')
+            if check_out < today:
+                raise forms.ValidationError('Дата выезда не может быть в прошлом')
+
             if check_out <= check_in:
                 raise forms.ValidationError('Дата выезда должна быть позже даты заезда')
 
