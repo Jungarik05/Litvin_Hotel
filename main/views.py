@@ -225,15 +225,15 @@ def profile_view(request):
     return render(request, 'main/profile.html', {'bookings': bookings})
 
 @login_required
-def booking_detail(request, booking_id):
+def booking_detail(request, pk):
     """Представление для отображения детальной информации о бронировании"""
-    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    booking = get_object_or_404(Booking, id=pk, user=request.user)
     return render(request, 'main/booking_detail.html', {'booking': booking})
 
 @login_required
-def create_complaint(request, booking_id):
+def create_complaint(request, pk):
     """Представление для создания жалобы"""
-    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    booking = get_object_or_404(Booking, id=pk, user=request.user)
     
     if request.method == 'POST':
         complaint_text = request.POST.get('complaint_text')
@@ -244,16 +244,16 @@ def create_complaint(request, booking_id):
                 status=ComplaintStatus.objects.get(name='Новая')
             )
             messages.success(request, 'Жалоба успешно отправлена')
-            return redirect('booking_detail', booking_id=booking.id)
+            return redirect('booking_detail', pk=booking.id)
         else:
             messages.error(request, 'Пожалуйста, введите текст жалобы')
     
     return render(request, 'main/create_complaint.html', {'booking': booking})
 
 @login_required
-def download_booking_pdf(request, booking_id):
+def download_booking_pdf(request, pk):
     """Генерация PDF с информацией о бронировании"""
-    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    booking = get_object_or_404(Booking, id=pk, user=request.user)
     
     # Создаем буфер для PDF
     buffer = io.BytesIO()
@@ -289,31 +289,15 @@ def download_booking_pdf(request, booking_id):
     # Рекомендации для гостей
     p.setFont("TimesNewRoman", 12)
     p.drawString(50, 500, "Рекомендации для гостей:")
-    recommendations = [
-        "1. Заезд возможен после 14:00",
-        "2. Выезд до 12:00",
-        "3. При заезде необходимо предъявить паспорт",
-        "4. Бесплатная парковка доступна на территории отеля",
-        "5. Wi-Fi доступен во всех номерах",
-        "6. Завтрак включен в стоимость проживания (7:00-10:00)",
-        "7. В случае опоздания, пожалуйста, сообщите администратору",
-        "8. Курение запрещено во всех помещениях отеля",
-        "9. Домашние животные не допускаются",
-        "10. При необходимости дополнительных услуг обратитесь на ресепшн"
-    ]
+    p.drawString(50, 480, "1. При заезде необходимо предъявить паспорт")
+    p.drawString(50, 460, "2. Расчетный час: 12:00")
+    p.drawString(50, 440, "3. При необходимости раннего заезда или позднего выезда")
+    p.drawString(50, 420, "   пожалуйста, сообщите администратору")
     
-    y = 480
-    for rec in recommendations:
-        p.drawString(50, y, rec)
-        y -= 20
-    
-    # Добавляем контактную информацию
-    p.setFont("TimesNewRoman-Bold", 12)
-    p.drawString(50, 200, "Контактная информация:")
-    p.setFont("TimesNewRoman", 12)
-    p.drawString(50, 180, "Адрес: ул. Примерная, 123")
-    p.drawString(50, 160, "Телефон: +7 (900) 123-45-67")
-    p.drawString(50, 140, "Email: info@hotel.com")
+    # Подпись
+    p.setFont("TimesNewRoman", 10)
+    p.drawString(50, 100, "Подпись администратора: _________________")
+    p.drawString(50, 80, "Дата: " + datetime.now().strftime("%d.%m.%Y"))
     
     # Сохраняем PDF
     p.showPage()
@@ -322,7 +306,7 @@ def download_booking_pdf(request, booking_id):
     # Перемещаем указатель в начало буфера
     buffer.seek(0)
     
-    # Создаем ответ с PDF файлом
+    # Создаем ответ с PDF
     response = FileResponse(buffer, as_attachment=True, filename=f'booking_{booking.id}.pdf')
     return response
 
